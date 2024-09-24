@@ -1,0 +1,88 @@
+@keyframes change-color{
+    0%{color: red;}
+    14%{color: orange;}
+    28%{color: yellow;}
+    46%{color: lightgreen;}
+    60%{color: blue;}
+    100%{color: deeppink;}
+    60%{color: blue;}
+    46%{color: lightgreen;}
+    28%{color: yellow;}
+    14%{color: orange;}
+    0%{color: red;}
+
+}
+
+body{
+    animation: change-color 5s infinite;
+    background-color: black;
+    text-align: center;
+}
+
+#form-data{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    
+}
+form{
+    display: block;
+    border: solid 3px;
+}
+
+.field{
+    width: 40vmin;
+    display: flex;
+    margin: 5vmin;
+    div{
+        width: 100%;
+        display: flex;
+    }
+    #label{
+        justify-content: left;
+    }
+    #input{
+        justify-content: right;
+    }
+}
+
+#button{
+    display: flex;
+    justify-content: center;
+}
+
+button {
+    margin-bottom: 3vmin;
+  font-family: inherit;
+  border: none;
+  outline: 1px dotted rgb(37, 37, 37);
+  outline-offset: -4px;
+  cursor: pointer;
+  background: hsl(0deg 0% 75%);
+  box-shadow:
+    inset -1px -1px #292929,
+    inset 1px 1px #fff,
+    inset -2px -2px rgb(158, 158, 158),
+    inset 2px 2px #ffffff;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 5px 30px;
+}
+
+button:active {
+  box-shadow:
+    inset -1px -1px #fff,
+    inset 1px 1px #292929,
+    inset -2px -2px #ffffff,
+    inset 2px 2px rgb(158, 158, 158);
+}
+
+
+#table{
+    margin-top: 5vmin;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
