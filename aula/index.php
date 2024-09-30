@@ -10,7 +10,12 @@
      die("Conexão falhou: " . $conn->connect_error);
  }
 
-$sql = "SELECT * FROM aulas";
+ $sql = "SELECT a.id_aula, a.nome_aula, sala_aula, departamento_aula, tempo_minutos_aula, 
+ a.assunto_aula, modulo_aula, d.fk_professor, p.nome_professor 
+ FROM aulas AS a 
+ LEFT JOIN diaria AS d ON d.fk_aula = a.id_aula 
+ LEFT JOIN professores as p on p.id_professor = d.fk_professor";
+
 
 $result = $conn -> query($sql);
 
@@ -58,7 +63,8 @@ $result = $conn -> query($sql);
 
         
     }elseif(isset($_POST['update'])){
-        if(isset($_POST['id']) && $_POST['id'] != ''){
+        if(isset($_POST['id_aula']) && $_POST['id_aula'] != ''){
+
             $id_aula = $_POST['id_aula'];
             $nome_aula = $_POST['nome_aula'];
             $sala_aula = $_POST['sala_aula'];
@@ -66,11 +72,22 @@ $result = $conn -> query($sql);
             $tempo_minutos = $_POST['tempo_minutos'];
             $assunto = $_POST['assunto'];
             $modulo = $_POST['modulo'];
+            $professor = $_POST['professor'];
 
-            $sql = "UPDATE pedidos SET nome_aula='$nome_aula', sala_aula='$sala_aula', departamento_aula='$departamento', tempo_minutos_aula='$tempo_minutos', assunto_aula='$assunto', modulo_aula='$modulo' WHERE id=$id";
+            $sql = "UPDATE aulas SET nome_aula='$nome_aula', sala_aula='$sala_aula', departamento_aula='$departamento', tempo_minutos_aula='$tempo_minutos', assunto_aula='$assunto', modulo_aula='$modulo' WHERE id_aula=$id_aula";
 
             if ($conn->query($sql) === TRUE) {
                 echo "Registro atualizado com sucesso";
+                header ("Location: index.php");
+
+                $sql = "UPDATE diaria SET fk_professor = $professor WHERE id_aula = $id_aula ";
+
+                if ($conn ->query($sql) === false) {
+                    echo "Erro: " . $sql . "<br>" . $conn->error;
+                }else{
+                    header ("Location: index.php");
+                }
+
             } else {
                 echo "Erro: " . $sql . "<br>" . $conn->error;
             }
