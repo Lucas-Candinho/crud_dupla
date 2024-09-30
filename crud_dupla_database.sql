@@ -2,7 +2,7 @@ CREATE DATABASE crud_beisola_candinho;
 USE crud_beisola_candinho;
 
 CREATE TABLE professores(
-	id_professor INT PRIMARY KEY NOT NULL,
+	id_professor INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
     nome_professor VARCHAR(45), 
     ultimo_nome_professor VARCHAR(45),
     cpf_professor VARCHAR(45),
@@ -11,7 +11,7 @@ CREATE TABLE professores(
 );
 
 CREATE TABLE aulas(
-	id_aula INT PRIMARY KEY NOT NULL,
+	id_aula INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
     nome_aula VARCHAR(255),
     sala_aula VARCHAR(45),
     departamento_aula VARCHAR(255),
@@ -21,9 +21,9 @@ CREATE TABLE aulas(
 );
 
 CREATE TABLE diaria(
-	id_diaria INT PRIMARY KEY NOT NULL,
+	id_diaria INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
 	fk_professor INT NOT NULL,
-    FOREIGN KEY (fk_professor) REFERENCES professor(id_professor),
+    FOREIGN KEY (fk_professor) REFERENCES professores(id_professor),
     fk_aula INT NOT NULL,
     FOREIGN KEY (fk_aula) REFERENCES aulas(id_aula)
 );

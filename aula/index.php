@@ -30,22 +30,28 @@ $result = $conn -> query($sql);
         if ($conn ->query($sql) === false) {
             echo "Erro: " . $sql . "<br>" . $conn->error;
         }else{
-            $sql = "select id_aula from aulas where 
-                                        nome_aula = '$nome_aula' and
-                                        sala_aula = '$sala_aula' and
-                                        departamento_aula = '$departamento' and
-                                        tempo_minutos_aula = '$tempo_minutos' and
-                                        assunto_aula = '$assunto' and
-                                        modulo_aula = '$modulo'
-            ";
-            $id_aula = $conn->query($sql);
+            $sql = "SELECT id_aula FROM aulas WHERE 
+                                        nome_aula = '$nome_aula' AND
+                                        sala_aula = '$sala_aula' AND
+                                        departamento_aula = '$departamento' AND
+                                        tempo_minutos_aula = '$tempo_minutos' AND
+                                        assunto_aula = '$assunto' AND
+                                        modulo_aula = '$modulo'";
+            $id_result = $conn->query($sql);
 
-            $sql = "INSERT INTO diaria (id_diaria, fk_professor, fk_aula) value (null, $professor, $id_aula)";
+            if ($id_result && $id_result->num_rows > 0) {
+                $row = $id_result->fetch_assoc();
+                $id_aula = $row['id_aula'];
 
-            if ($conn ->query($sql) === false) {
-                echo "Erro: " . $sql . "<br>" . $conn->error;
-            }else{
-                header ("Location: index.php");
+                $sql = "INSERT INTO diaria (id_diaria, fk_professor, fk_aula) VALUES (null, '$professor', '$id_aula')";
+
+                if ($conn->query($sql) === false) {
+                    echo "Erro: " . $sql . "<br>" . $conn->error;
+                } else {
+                    header("Location: index.php");
+                }
+            } else {
+                echo "Erro: Aula não encontrada.";
             }
             
         }
@@ -87,6 +93,10 @@ $result = $conn -> query($sql);
         }
     }
     
+    $sql = "SELECT id_professor, nome_professor, ultimo_nome_professor FROM professores";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $result_professor = $stmt->get_result();
 }        
 
 ?>
@@ -169,11 +179,15 @@ $result = $conn -> query($sql);
 
             <div class="field">
                 <div class="label">
-                    <label for="professor">Professor</label> 
+                    <label for="professor">Professor</label>
                 </div>
-                <div class="input">
-                    <input type="string" id="professor" name="professor" required>
-                </div>
+                <select name="professor" id="professor" name="professor" required>
+                <?php while ($professor_obj = $result_professor->fetch_assoc()): ?>
+                    <option value="<?= $professor_obj['id_professor']; ?>">
+                        <?= $professor_obj['nome_professor'] . " " . $professor_obj['ultimo_nome_professor']; ?>
+                    </option>
+                <?php endwhile; ?>
+                </select>
             </div>
 
             <div id="button">
